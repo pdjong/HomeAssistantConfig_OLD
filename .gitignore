@@ -4,7 +4,13 @@
 # You can allowlist files/folders with !, these will not be ignored.
 !.gitignore
 !*.yaml
+!.storage
+!.storage/person
+!.storage/lovelace*
+!.storage/input*
+
 !README.md
 
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 secrets.yaml
+

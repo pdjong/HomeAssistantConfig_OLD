@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "key": "input_boolean",
+    "data": {
+        "items": [
+            {
+                "name": "Vakantie",
+                "id": "werkdag"
+            },
+            {
+                "name": "Notificeer wasmachine zodra thuis",
+                "id": "notify_washing_machine"
+            }
+        ]
+    }
+}

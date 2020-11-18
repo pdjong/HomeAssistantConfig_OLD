@@ -1,0 +1,358 @@
+{
+    "version": 1,
+    "key": "lovelace.lovelace_testdashboard",
+    "data": {
+        "config": {
+            "views": [
+                {
+                    "title": "Woonkamer",
+                    "path": "woonkamer",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "cover.screen_pui",
+                                    "name": "Pui"
+                                },
+                                {
+                                    "entity": "cover.screen_raam",
+                                    "name": "Raam"
+                                },
+                                {
+                                    "entity": "cover.screen_voorgevel",
+                                    "name": "Voorgevel"
+                                }
+                            ],
+                            "title": "Zonneschermen",
+                            "show_header_toggle": true,
+                            "state_color": false
+                        },
+                        {
+                            "type": "sensor",
+                            "entity": "sensor.woonkamer_inside_temperature",
+                            "name": "Temperatuur",
+                            "graph": "line",
+                            "detail": 1
+                        },
+                        {
+                            "type": "horizontal-stack",
+                            "cards": [
+                                {
+                                    "type": "light",
+                                    "entity": "light.eettafel"
+                                },
+                                {
+                                    "type": "light",
+                                    "entity": "light.keukenspots"
+                                },
+                                {
+                                    "type": "light",
+                                    "entity": "light.woonkamer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "custom:mini-climate",
+                            "entity": "climate.woonkamer",
+                            "toggle": {
+                                "hide": true
+                            }
+                        },
+                        {
+                            "type": "custom:mini-media-player",
+                            "entity": "media_player.woonkamer",
+                            "artwork": "cover",
+                            "info": "scroll",
+                            "volume_stateless": false,
+                            "max_volume": 10,
+                            "hide": {
+                                "power": true,
+                                "shuffle": false,
+                                "runtime": true
+                            }
+                        },
+                        {
+                            "type": "horizontal-stack",
+                            "cards": [
+                                {
+                                    "type": "button",
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "hue.hue_activate_scene",
+                                        "service_data": {
+                                            "group_name": "Woonkamer",
+                                            "scene_name": "Kleurtjes"
+                                        }
+                                    },
+                                    "name": "Kleurtjes"
+                                },
+                                {
+                                    "type": "button",
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "hue.hue_activate_scene",
+                                        "service_data": {
+                                            "group_name": "Woonkamer",
+                                            "scene_name": "Gezellig"
+                                        }
+                                    },
+                                    "name": "Gezellig"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "calendar.garbage_green"
+                                },
+                                {
+                                    "entity": "calendar.garbage_grey"
+                                },
+                                {
+                                    "entity": "calendar.garbage_paper"
+                                },
+                                {
+                                    "entity": "calendar.garbage_pmd"
+                                }
+                            ],
+                            "title": "Afvalinzameling"
+                        }
+                    ]
+                },
+                {
+                    "title": "Boven",
+                    "path": "boven",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "cover.rolluik_kantoor",
+                                    "name": "Kantoor"
+                                },
+                                {
+                                    "entity": "cover.rolluik_sportkamer",
+                                    "name": "Sportkamer"
+                                }
+                            ],
+                            "title": "Rolluiken"
+                        },
+                        {
+                            "type": "vertical-stack",
+                            "title": "Aircos",
+                            "cards": [
+                                {
+                                    "type": "custom:mini-climate",
+                                    "entity": "climate.kantoor_achter",
+                                    "toggle": {
+                                        "hide": true
+                                    }
+                                },
+                                {
+                                    "type": "custom:mini-climate",
+                                    "entity": "climate.sportkamer",
+                                    "toggle": {
+                                        "hide": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "horizontal-stack",
+                            "cards": [
+                                {
+                                    "type": "sensor",
+                                    "entity": "sensor.kantoor_inside_temperature",
+                                    "graph": "line",
+                                    "name": "Kantoor"
+                                },
+                                {
+                                    "type": "sensor",
+                                    "entity": "sensor.sportkamer_inside_temperature",
+                                    "name": "Sportkamer",
+                                    "detail": 1,
+                                    "graph": "line"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "custom:mini-media-player",
+                            "entity": "media_player.sportkamer",
+                            "artwork": "cover",
+                            "info": "scroll",
+                            "volume_stateless": false,
+                            "max_volume": 25,
+                            "hide": {
+                                "power": true,
+                                "shuffle": false,
+                                "runtime": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Aircos",
+                    "path": "aircos",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "thermostat",
+                            "entity": "climate.woonkamer"
+                        },
+                        {
+                            "type": "thermostat",
+                            "entity": "climate.slaapkamer"
+                        },
+                        {
+                            "type": "thermostat",
+                            "entity": "climate.sportkamer"
+                        },
+                        {
+                            "type": "thermostat",
+                            "entity": "climate.kantoor_achter"
+                        }
+                    ]
+                },
+                {
+                    "title": "Systeem",
+                    "path": "systeem",
+                    "visible": [
+                        {
+                            "user": "931c7b118d3f491f9ba2c5597a809da3"
+                        },
+                        {
+                            "user": "f7f3bdcb604e4bb2922789fe26472520"
+                        }
+                    ],
+                    "badges": [
+                        {
+                            "entity": "person.paul"
+                        },
+                        {
+                            "entity": "person.leo"
+                        }
+                    ],
+                    "cards": [
+                        {
+                            "type": "horizontal-stack",
+                            "cards": [
+                                {
+                                    "type": "gauge",
+                                    "entity": "sensor.processor_use_percent",
+                                    "min": 0,
+                                    "max": 100,
+                                    "name": "CPU Gebruik"
+                                },
+                                {
+                                    "type": "gauge",
+                                    "entity": "sensor.memory_use_percent",
+                                    "min": 0,
+                                    "max": 100,
+                                    "name": "Geheugen Gebruik"
+                                },
+                                {
+                                    "type": "gauge",
+                                    "entity": "sensor.disk_use_percent",
+                                    "min": 0,
+                                    "max": 100,
+                                    "name": "Schijfruimte Gebruik"
+                                },
+                                {
+                                    "type": "gauge",
+                                    "entity": "sensor.processor_temperature",
+                                    "min": 20,
+                                    "max": 80
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": "Power",
+                    "path": "power",
+                    "visible": [
+                        {
+                            "user": "931c7b118d3f491f9ba2c5597a809da3"
+                        },
+                        {
+                            "user": "f7f3bdcb604e4bb2922789fe26472520"
+                        }
+                    ],
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.power_consumption"
+                                },
+                                {
+                                    "entity": "sensor.power_consumption_phase_l1"
+                                },
+                                {
+                                    "entity": "sensor.power_consumption_phase_l2"
+                                },
+                                {
+                                    "entity": "sensor.power_consumption_phase_l3"
+                                },
+                                {
+                                    "entity": "sensor.power_production"
+                                },
+                                {
+                                    "entity": "sensor.power_production_phase_l1"
+                                },
+                                {
+                                    "entity": "sensor.power_production_phase_l2"
+                                },
+                                {
+                                    "entity": "sensor.power_production_phase_l3"
+                                },
+                                {
+                                    "entity": "sensor.hourly_gas_consumption"
+                                },
+                                {
+                                    "entity": "sensor.gas_consumption"
+                                }
+                            ],
+                            "state_color": false,
+                            "show_header_toggle": true
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.holiday"
+                                },
+                                {
+                                    "entity": "binary_sensor.working_day"
+                                },
+                                {
+                                    "entity": "input_datetime.melding_afval"
+                                },
+                                {
+                                    "entity": "binary_sensor.someone_home"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "sensor.wasmachine_energy"
+                                },
+                                {
+                                    "entity": "sensor.wasmachine_power",
+                                    "secondary_info": "last-changed"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

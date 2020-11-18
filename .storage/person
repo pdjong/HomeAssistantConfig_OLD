@@ -1,0 +1,33 @@
+{
+    "version": 2,
+    "key": "person",
+    "data": {
+        "items": [
+            {
+                "name": "Leo",
+                "user_id": "931c7b118d3f491f9ba2c5597a809da3",
+                "device_trackers": [
+                    "device_tracker.ubi_ileo"
+                ],
+                "id": "leo",
+                "picture": null
+            },
+            {
+                "name": "Paul",
+                "device_trackers": [
+                    "device_tracker.ubi_ipaul"
+                ],
+                "user_id": "d333586526f74c0884cc41ce83354fc9",
+                "picture": null,
+                "id": "paul"
+            },
+            {
+                "name": "Admin",
+                "device_trackers": [],
+                "user_id": "f7f3bdcb604e4bb2922789fe26472520",
+                "picture": null,
+                "id": "admin"
+            }
+        ]
+    }
+}

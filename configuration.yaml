@@ -1,0 +1,83 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+http:
+  base_url: !secret http_baseurl
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+# Text to speech
+tts:
+  - platform: microsoft
+    api_key: !secret tts_microsoft_api_key
+    region: westeurope
+    rate: 25
+
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: processor_temperature
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /
+  - platform: dsmr
+    port: /dev/ttyUSB0
+    dsmr_version: 4
+        
+binary_sensor:
+  - platform: template
+    sensors:
+      working_day:
+        friendly_name: "Werkdag"
+        value_template: "{{ is_state('input_boolean.holiday', 'off') and is_state('calendar.dayoff_both', 'off') and (now().weekday() in [0,1,2,3] or (now().weekday() == 4 and (now().isocalendar()[1] | int % 2) == 0))}}"
+      someone_home:
+        friendly_name: "Iemand thuis"
+        icon_template: >-
+          {% if is_state('binary_sensor.someone_home','on') %} mdi:home-account
+          {% else %} mdi:home-outline
+          {% endif %}
+        value_template: "{{ is_state(\"person.leo\", \"home\") or is_state(\"person.paul\", \"home\") }}"
+        
+recorder:
+  commit_interval: 30
+  include:
+    entity_globs:
+      - sensor.*_inside_temperature
+    entities:
+      - sensor.processor_temperature
+      - sensor.processor_use_percent
+      - sensor.memory_use_percent
+      - sensor.disk_use_percent
+      - sensor.wasmachine_power
+      - binary_sensor.someone_home
+    domains:
+      - person
+     
+ios:
+  push:
+    categories:
+      - name: Rolluiken
+        identifier: cover_actions
+        actions:
+          - identifier: CLOSE
+            title: Sluit
+            activationMode: 'background'
+            authenticationRequired: true
+            destructive: true
+            
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+  project_id: !secret nest_project_id
+  subscriber_id: !secret nest_subscriber_id
+  
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret

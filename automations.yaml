@@ -1,0 +1,157 @@
+- id: '1604597663774'
+  alias: Buitenlamp aan bij schemering
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    attribute: elevation
+    below: -4
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      kelvin: 2500
+      brightness_pct: 30
+    entity_id: light.buitenlamp_voordeur
+  mode: single
+- id: '1604672700254'
+  alias: Werken Paul
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.working_day
+    state: 'on'
+  - condition: state
+    entity_id: calendar.dayoff_paul
+    state: 'off'
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    entity_id: cover.rolluik_sportkamer
+  - condition: numeric_state
+    entity_id: climate.sportkamer
+    attribute: current_temperature
+    below: '20'
+  - service: climate.set_temperature
+    data:
+      temperature: 20
+      hvac_mode: heat
+    entity_id: climate.sportkamer
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: Auto
+    entity_id: climate.sportkamer
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.sportkamer
+  mode: single
+- id: '1604844241110'
+  alias: Notificatie wasmachine
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.wasmachine_power
+    above: 20
+  condition:
+  - condition: state
+    entity_id: script.notification_washing_machine
+    state: 'off'
+  action:
+  - service: homeassistant.turn_on
+    data: {}
+    entity_id: script.notification_washing_machine
+  mode: single
+- id: '1604903702658'
+  alias: Notificatie wasmachine bij thuiskomst
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.someone_home
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.notify_washing_machine_when_home
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.leo
+        state: home
+      sequence:
+      - service: notify.mobile_app_iphone_leo
+        data:
+          message: Wasmachine is klaar!
+          title: Wasmachine
+    - conditions:
+      - condition: state
+        entity_id: person.paul
+        state: home
+      sequence:
+      - service: notify.mobile_app_ipaul
+        data:
+          message: Wasmachine is klaar!
+          title: Wasmachine
+    default: []
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.notify_washing_machine_when_home
+  mode: single
+- id: '1604948418281'
+  alias: Controle rolluiken boven
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: cover.rolluik_kantoor
+      state: open
+    - condition: state
+      entity_id: cover.rolluik_sportkamer
+      state: open
+  action:
+  - service: notify.notify
+    data:
+      message: Rolluiken boven zijn niet gesloten
+      data:
+        push:
+          category: cover_actions
+  mode: single
+- id: '1604949459096'
+  alias: Terugmelding iPhone zonnewering
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: CLOSE
+  condition: []
+  action:
+  - service: cover.close_cover
+    entity_id: cover.rolluik_kantoor
+    data: {}
+  - service: cover.close_cover
+    data: {}
+    entity_id: cover.rolluik_sportkamer
+  mode: single
+- id: '1605257557952'
+  alias: Buitenlamp uit
+  description: ''
+  trigger:
+  - platform: time
+    at: 23:30:00
+  condition: []
+  action:
+  - type: turn_off
+    device_id: a711e3378fc399df69238ec5f05faa6f
+    entity_id: light.buitenlamp_voordeur
+    domain: light
+  mode: single

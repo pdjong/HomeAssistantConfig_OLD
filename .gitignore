@@ -1,0 +1,10 @@
+# Start with ignore all
+*
+
+# You can allowlist files/folders with !, these will not be ignored.
+!.gitignore
+!*.yaml
+!README.md
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+secrets.yaml

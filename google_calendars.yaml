@@ -1,0 +1,69 @@
+
+- cal_id: p#weeknum@group.v.calendar.google.com
+  entities:
+  - device_id: weeknummers
+    ignore_availability: true
+    name: Weeknummers
+    track: false
+
+- cal_id: scjcg75qc7u79n02gjf6bgcs7o@group.calendar.google.com
+  entities:
+  - device_id: gezamenlijk
+    ignore_availability: true
+    name: Gezamenlijk
+    track: true
+  - device_id: garbage_paper
+    name: Papiercontainer
+    track: true
+    search: "Papierinzameling"
+  - device_id: garbage_pmd
+    name: PMD Zak
+    track: true
+    search: "PMD-zak"
+  - device_id: garbage_green
+    name: GFT Container
+    track: true
+    search: "Groene container"
+  - device_id: garbage_grey
+    name: Restafval
+    track: true
+    search: "Grijze container"
+  - device_id: dayoff_both
+    name: Vrije dag samen
+    track: true
+    search: "Vrij" 
+
+- cal_id: paul.m.de.jong@gmail.com
+  entities:
+  - device_id: paul_m_de_jong_gmail_com
+    ignore_availability: true
+    name: paul.m.de.jong@gmail.com
+    track: true
+  - device_id: dayoff_paul
+    name: Vrije dag Paul
+    track: true
+    search: "Vrij"
+
+- cal_id: leo.schelvis@gmail.com
+  entities:
+  - device_id: leo
+    ignore_availability: true
+    name: Leo
+    track: true
+  - device_id: dayoff_leo
+    name: Vrije dag Leo
+    track: true
+    search: "Vrij"    
+
+- cal_id: addressbook#contacts@group.v.calendar.google.com
+  entities:
+  - device_id: verjaardagen
+    ignore_availability: true
+    name: Verjaardagen
+    track: true
+- cal_id: dutch__nl@holiday.calendar.google.com
+  entities:
+  - device_id: feestdagen_in_nederland
+    ignore_availability: true
+    name: Feestdagen in Nederland
+    track: true

@@ -5,7 +5,7 @@
   - platform: numeric_state
     entity_id: sun.sun
     attribute: elevation
-    below: -4
+    below: '-4'
   condition: []
   action:
   - service: light.turn_on
@@ -19,7 +19,7 @@
   description: ''
   trigger:
   - platform: time
-    at: 07:00:00
+    at: '07:00:00'
   condition:
   - condition: state
     entity_id: binary_sensor.working_day
@@ -147,7 +147,7 @@
   description: ''
   trigger:
   - platform: time
-    at: 23:30:00
+    at: '23:30:00'
   condition: []
   action:
   - type: turn_off

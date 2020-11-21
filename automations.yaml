@@ -5,7 +5,7 @@
   - platform: numeric_state
     entity_id: sun.sun
     attribute: elevation
-    below: '-4'
+    below: -4
   condition: []
   action:
   - service: light.turn_on
@@ -19,7 +19,7 @@
   description: ''
   trigger:
   - platform: time
-    at: '07:00:00'
+    at: 07:00:00
   condition:
   - condition: state
     entity_id: binary_sensor.working_day
@@ -153,5 +153,21 @@
   - type: turn_off
     device_id: a711e3378fc399df69238ec5f05faa6f
     entity_id: light.buitenlamp_voordeur
+    domain: light
+  mode: single
+- id: '1605801311814'
+  alias: Deurbel
+  description: ''
+  trigger:
+  - type: occupied
+    platform: device
+    device_id: b3f13f139fece26297263e72b98edb45
+    entity_id: binary_sensor.voordeur_ding
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: flash
+    device_id: 6bd7309415e77118cfdf0a43dc8121ed
+    entity_id: light.bank
     domain: light
   mode: single

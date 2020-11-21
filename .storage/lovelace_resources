@@ -22,6 +22,11 @@
                 "url": "/local/community/lovelace-fold-entity-row/fold-entity-row.js",
                 "type": "module",
                 "id": "10927200fd97418bb8fb4fe33905fd68"
+            },
+            {
+                "url": "local/community/lovelace-slider-entity-row/slider-entity-row.js",
+                "type": "module",
+                "id": "6ad066abe90e40f087c24cef5818a257"
             }
         ]
     }

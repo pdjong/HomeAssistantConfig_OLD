@@ -19,7 +19,7 @@
   description: ''
   trigger:
   - platform: time
-    at: 07:00:00
+    at: 06:45:00
   condition:
   - condition: state
     entity_id: binary_sensor.working_day
@@ -170,4 +170,39 @@
     device_id: 6bd7309415e77118cfdf0a43dc8121ed
     entity_id: light.bank
     domain: light
+  mode: single
+- id: '1606040103592'
+  alias: Werken Leo
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:45:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.working_day
+    state: 'on'
+  - condition: state
+    entity_id: calendar.dayoff_leo
+    state: 'off'
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    entity_id: cover.rolluik_kantoor
+  - condition: numeric_state
+    entity_id: climate.kantoor_achter
+    attribute: current_temperature
+    below: '20'
+  - service: climate.set_temperature
+    data:
+      temperature: 20
+      hvac_mode: heat
+    entity_id: climate.kantoor_achter
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: Auto
+    entity_id: climate.kantoor_achter
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.kantoor_achter
   mode: single

@@ -10,6 +10,10 @@
             {
                 "name": "Notificeer wasmachine zodra thuis",
                 "id": "notify_washing_machine"
+            },
+            {
+                "name": "Deurbel",
+                "id": "doorbell_enabled"
             }
         ]
     }

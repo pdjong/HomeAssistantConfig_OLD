@@ -85,3 +85,9 @@ nest:
 google:
   client_id: !secret google_client_id
   client_secret: !secret google_client_secret
+
+media_player:
+# Use the Python ADB implementation
+- platform: androidtv
+  name: TV
+  host: 192.168.2.6

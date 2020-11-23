@@ -164,12 +164,44 @@
     device_id: b3f13f139fece26297263e72b98edb45
     entity_id: binary_sensor.voordeur_ding
     domain: binary_sensor
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.enable_deurbel
+    state: 'on'
   action:
   - type: flash
     device_id: 6bd7309415e77118cfdf0a43dc8121ed
     entity_id: light.bank
     domain: light
+  - service: sonos.snapshot
+    entity_id: all
+  - service: tts.microsoft_say
+    data:
+      message: Er staat iemand bij de deur
+      entity_id: media_player.woonkamer
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.4
+    entity_id: media_player.woonkamer
+  - service: tts.microsoft_say
+    data:
+      message: Er staat iemand bij de deur
+      entity_id: media_player.sportkamer
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.4
+    entity_id: media_player.sportkamer
+  - service: tts.microsoft_say
+    data:
+      message: Er staat iemand bij de deur
+      entity_id: media_player.slaapkamer
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.4
+    entity_id: media_player.slaapkamer
+  - delay: 0:00:03
+  - service: sonos.restore
+    entity_id: all
   mode: single
 - id: '1606040103592'
   alias: Werken Leo

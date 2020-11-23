@@ -27,6 +27,11 @@
                 "url": "local/community/lovelace-slider-entity-row/slider-entity-row.js",
                 "type": "module",
                 "id": "6ad066abe90e40f087c24cef5818a257"
+            },
+            {
+                "url": "/local/community/button-card/button-card.js",
+                "type": "module",
+                "id": "d0a35fd3326d49efa5c993aa13849cfc"
             }
         ]
     }

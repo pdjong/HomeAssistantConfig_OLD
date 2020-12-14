@@ -57,10 +57,6 @@ recorder:
       - sensor.processor_use_percent
       - sensor.memory_use_percent
       - sensor.disk_use_percent
-      - sensor.wasmachine_power
-      - binary_sensor.someone_home
-      - binary_sensor.voordeur_ding
-      - binary_sensor.voordeur_motion
     domains:
       - person
      
@@ -75,6 +71,26 @@ ios:
             activationMode: 'background'
             authenticationRequired: true
             destructive: true
+      - name: Aircos
+        identifier: airco_actions
+        actions:
+          - identifier: POWEROFF
+            title: Uitschakelen
+            activationMode: 'background'
+            authenticationRequired: true
+            destructive: false        
+          - identifier: IGNORE
+            title: Negeren
+            activationMode: 'background'
+            authenticationRequired: true
+            destructive: true
+      - name: Wasmachine
+        identifier: washing_machine_actions
+        actions:
+          - identifier: EMPTIED
+            title: Leeggehaald
+            activationMode: 'background'
+            authenticationRequired: true
             
 nest:
   client_id: !secret nest_client_id
@@ -91,3 +107,11 @@ media_player:
 - platform: androidtv
   name: TV
   host: 192.168.2.6
+
+cover:
+  - platform: group
+    name: Zonwering beneden
+    entities:
+      - cover.screen_raam
+      - cover.screen_pui
+      - cover.screen_voorgevel

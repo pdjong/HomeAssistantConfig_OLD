@@ -8,6 +8,9 @@ notification_washing_machine:
       for: 0:03:00
     continue_on_timeout: true
     timeout: '3:00:00'
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.washing_machine_full
   - service: notify.notify
     data:
       message: De wasmachine is klaar!
@@ -26,12 +29,4 @@ notification_washing_machine:
     data:
       timestamp: '{{ now().timestamp() }}'
     entity_id: input_datetime.washing_machine_done
-  mode: single
-test_script:
-  alias: test script
-  sequence:
-  - type: flash
-    device_id: 0e3e085b6af58a761d12e4fdc05a0438
-    entity_id: light.eettafel_1
-    domain: light
   mode: single

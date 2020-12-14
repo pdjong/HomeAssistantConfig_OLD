@@ -1,18 +1,24 @@
 - id: '1604597663774'
-  alias: Buitenlamp aan bij schemering
+  alias: Buitenverlichting - Aan bij schemering
   description: ''
   trigger:
   - platform: numeric_state
     entity_id: sun.sun
     attribute: elevation
-    below: -4
-  condition: []
+    below: '-3'
+  condition:
+  - condition: time
+    before: '23:15:00'
   action:
   - service: light.turn_on
     data:
       kelvin: 2500
       brightness_pct: 30
     entity_id: light.buitenlamp_voordeur
+  - type: turn_on
+    device_id: 7e54968ae3dbb7569eb2ead6e58d91f7
+    entity_id: light.kerstverlichting
+    domain: light
   mode: single
 - id: '1604672700254'
   alias: Werken Paul
@@ -50,12 +56,12 @@
     entity_id: climate.sportkamer
   mode: single
 - id: '1604844241110'
-  alias: Notificatie wasmachine
+  alias: Wasmachine - Notificatie was klaar
   description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.wasmachine_power
-    above: 20
+    above: '20'
   condition:
   - condition: state
     entity_id: script.notification_washing_machine
@@ -66,7 +72,7 @@
     entity_id: script.notification_washing_machine
   mode: single
 - id: '1604903702658'
-  alias: Notificatie wasmachine bij thuiskomst
+  alias: Wasmachine - Notificatie bij thuiskomst
   description: ''
   trigger:
   - platform: state
@@ -84,9 +90,10 @@
         entity_id: person.leo
         state: home
       sequence:
-      - service: notify.mobile_app_iphone_leo
+      - service: notify.mobile_app_ileo
         data:
-          message: Wasmachine is klaar!
+          message: Wasmachine is {{float((now().timestamp() - as_timestamp(strptime(states("input_datetime.washing_machine_done"),"")))
+            / 60) | round(0)}} minuten klaar!
           title: Wasmachine
     - conditions:
       - condition: state
@@ -95,7 +102,8 @@
       sequence:
       - service: notify.mobile_app_ipaul
         data:
-          message: Wasmachine is klaar!
+          message: Wasmachine is {{float((now().timestamp() - as_timestamp(strptime(states("input_datetime.washing_machine_done"),"")))
+            / 60) | round(0)}} minuten klaar!
           title: Wasmachine
     default: []
   - service: input_boolean.turn_off
@@ -103,7 +111,7 @@
     entity_id: input_boolean.notify_washing_machine_when_home
   mode: single
 - id: '1604948418281'
-  alias: Controle rolluiken boven
+  alias: Rolluiken boven - Notificatie als nog open
   description: ''
   trigger:
   - platform: time
@@ -126,7 +134,7 @@
           category: cover_actions
   mode: single
 - id: '1604949459096'
-  alias: Terugmelding iPhone zonnewering
+  alias: Rolluiken boven - Terugmelding iPhone na notificatie
   description: ''
   trigger:
   - platform: event
@@ -143,7 +151,7 @@
     entity_id: cover.rolluik_sportkamer
   mode: single
 - id: '1605257557952'
-  alias: Buitenlamp uit
+  alias: Buitenverlichting -  Uit eind van de avond
   description: ''
   trigger:
   - platform: time
@@ -153,6 +161,10 @@
   - type: turn_off
     device_id: a711e3378fc399df69238ec5f05faa6f
     entity_id: light.buitenlamp_voordeur
+    domain: light
+  - type: turn_off
+    device_id: 7e54968ae3dbb7569eb2ead6e58d91f7
+    entity_id: light.kerstverlichting
     domain: light
   mode: single
 - id: '1605801311814'
@@ -175,31 +187,25 @@
     domain: light
   - service: sonos.snapshot
     entity_id: all
-  - service: tts.microsoft_say
+  - service: media_player.play_media
     data:
-      message: Er staat iemand bij de deur
       entity_id: media_player.woonkamer
+      media_content_id: https://broekweg.duckdns.org:8123/local/christmas-doorbell-melody.mp3
+      media_content_type: music
   - service: media_player.volume_set
     data:
-      volume_level: 0.4
+      volume_level: 0.15
     entity_id: media_player.woonkamer
-  - service: tts.microsoft_say
+  - service: media_player.play_media
     data:
-      message: Er staat iemand bij de deur
       entity_id: media_player.sportkamer
+      media_content_id: https://broekweg.duckdns.org:8123/local/christmas-doorbell-melody.mp3
+      media_content_type: music
   - service: media_player.volume_set
     data:
-      volume_level: 0.4
+      volume_level: 0.15
     entity_id: media_player.sportkamer
-  - service: tts.microsoft_say
-    data:
-      message: Er staat iemand bij de deur
-      entity_id: media_player.slaapkamer
-  - service: media_player.volume_set
-    data:
-      volume_level: 0.4
-    entity_id: media_player.slaapkamer
-  - delay: 0:00:03
+  - delay: 0:00:06
   - service: sonos.restore
     entity_id: all
   mode: single
@@ -227,7 +233,7 @@
     below: '20'
   - service: climate.set_temperature
     data:
-      temperature: 20
+      temperature: 21
       hvac_mode: heat
     entity_id: climate.kantoor_achter
   - service: climate.set_fan_mode
@@ -237,4 +243,296 @@
   - service: climate.turn_on
     data: {}
     entity_id: climate.kantoor_achter
+  mode: single
+- id: '1606237761283'
+  alias: Woonkamer - Verlichting bij zonsondergang
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    attribute: elevation
+    below: '-2'
+  condition: []
+  action:
+  - service: hue.hue_activate_scene
+    data:
+      group_name: Woonkamer
+      scene_name: Avond wit
+  mode: single
+- id: '1607615340734'
+  alias: Woonkamer - Activeren ochtend (werkdagen)
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: f4abae4dd613f865330d1ac048404ae2
+    entity_id: binary_sensor.ms_gang_motion
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: input_boolean.morning_livingroom_activated
+    state: 'off'
+  - condition: time
+    after: 06:00:00
+  - condition: state
+    entity_id: binary_sensor.working_day
+    state: 'on'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 100
+      kelvin: 3000
+      entity_id: light.badkamer
+  - service: hue.hue_activate_scene
+    data:
+      group_name: Woonkamer
+      scene_name: Avond wit
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.1
+      entity_id: media_player.woonkamer
+  - service: media_player.select_source
+    data:
+      source: 538
+      entity_id: media_player.woonkamer
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.morning_livingroom_activated
+  mode: single
+- id: '1607615821925'
+  alias: Woonkamer - Reset morning_livingroom_activated
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.morning_livingroom_activated
+  mode: single
+- id: '1607705411366'
+  alias: Gang - Verlichting aan (werkdag)
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: f4abae4dd613f865330d1ac048404ae2
+    entity_id: binary_sensor.ms_gang_motion
+    domain: binary_sensor
+  condition:
+  - condition: time
+    before: '23:30:00'
+    after: 06:00:00
+  - condition: numeric_state
+    entity_id: sensor.ms_gang_light_level
+    below: '25'
+  - condition: state
+    entity_id: binary_sensor.working_day
+    state: 'on'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 75
+      entity_id: light.gang
+  mode: single
+- id: '1607705616673'
+  alias: Gang - Verlichting uit
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: f4abae4dd613f865330d1ac048404ae2
+    entity_id: binary_sensor.ms_gang_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.gang
+  mode: single
+- id: '1607929388814'
+  alias: Gang - Verlichting aan (niet werkdag - ochtend)
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: f4abae4dd613f865330d1ac048404ae2
+    entity_id: binary_sensor.ms_gang_motion
+    domain: binary_sensor
+  condition:
+  - condition: time
+    before: 09:00:00
+    after: 06:00:00
+  - condition: numeric_state
+    entity_id: sensor.ms_gang_light_level
+    below: '25'
+  - condition: state
+    entity_id: binary_sensor.working_day
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+      entity_id: light.gang
+  mode: single
+- id: '1607929547481'
+  alias: Gang - Verlichting aan (niet werkdag - na 09:00)
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: f4abae4dd613f865330d1ac048404ae2
+    entity_id: binary_sensor.ms_gang_motion
+    domain: binary_sensor
+  condition:
+  - condition: time
+    before: '23:30:00'
+    after: 09:00:00
+  - condition: numeric_state
+    entity_id: sensor.ms_gang_light_level
+    below: '25'
+  - condition: state
+    entity_id: binary_sensor.working_day
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 75
+      entity_id: light.gang
+  mode: single
+- id: '1607931655043'
+  alias: Aircos boven - Notificatie
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '30'
+  condition:
+  - condition: time
+    after: '19:59'
+    before: '23:30:00'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: climate.sportkamer
+      state: 'on'
+    - condition: state
+      entity_id: climate.kantoor_achter
+      state: 'on'
+  - condition: state
+    entity_id: input_boolean.notify_airco_ignored
+    state: 'off'
+  action:
+  - service: notify.notify
+    data:
+      message: Aircos boven zijn niet uitgeschakeld
+      data:
+        push:
+          category: airco_actions
+  mode: single
+- id: '1607931826873'
+  alias: Aircos boven - Reset helper
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:45:00'
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.notify_airco_ignored
+  mode: single
+- id: '1607931902223'
+  alias: Aircos boven - Terugmelding iPhone - IGNORE
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: IGNORE
+      categoryName: airco_actions
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.notify_airco_ignored
+  mode: single
+- id: '1607932067334'
+  alias: Aircos boven - Terugmelding iPhone - POWEROFF
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: POWEROFF
+      categoryName: airco_actions
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.kantoor_achter
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.sportkamer
+  mode: single
+- id: '1607950295735'
+  alias: Wasmachine - Terugmelding iPhone
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: EMPTIED
+      categoryName: washing_machine_actions
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.washing_machine_full
+  mode: single
+- id: '1607950585032'
+  alias: Wasmachine - Elk kwartier
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.washing_machine_full
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.leo
+        state: home
+      sequence:
+      - service: notify.mobile_app_ileo
+        data:
+          message: Wasmachine is {{float((now().timestamp() - as_timestamp(strptime(states("input_datetime.washing_machine_done"),"")))
+            / 60) | round(0)}} minuten klaar!
+          title: Wasmachine
+          data:
+            push:
+              category: washing_machine_actions
+    default: []
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.paul
+        state: home
+      sequence:
+      - service: notify.mobile_app_ipaul
+        data:
+          message: Wasmachine is {{float((now().timestamp() - as_timestamp(strptime(states("input_datetime.washing_machine_done"),"")))
+            / 60) | round(0)}} minuten klaar!
+          title: Wasmachine
+          data:
+            push:
+              category: washing_machine_actions
+    default: []
   mode: single

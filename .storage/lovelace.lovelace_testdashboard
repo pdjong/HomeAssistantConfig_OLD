@@ -37,23 +37,6 @@
                             "detail": 1
                         },
                         {
-                            "type": "horizontal-stack",
-                            "cards": [
-                                {
-                                    "type": "light",
-                                    "entity": "light.eettafel"
-                                },
-                                {
-                                    "type": "light",
-                                    "entity": "light.keukenspots"
-                                },
-                                {
-                                    "type": "light",
-                                    "entity": "light.woonkamer"
-                                }
-                            ]
-                        },
-                        {
                             "type": "custom:mini-climate",
                             "entity": "climate.woonkamer",
                             "toggle": {
@@ -66,7 +49,7 @@
                             "artwork": "cover",
                             "info": "scroll",
                             "volume_stateless": false,
-                            "max_volume": 10,
+                            "max_volume": 30,
                             "hide": {
                                 "power": true,
                                 "shuffle": false,
@@ -119,6 +102,83 @@
                                 }
                             ],
                             "title": "Afvalinzameling"
+                        },
+                        {
+                            "type": "custom:mini-climate",
+                            "entity": "climate.living_room",
+                            "target_temperature": {
+                                "step": 0.5
+                            },
+                            "toggle": {
+                                "hide": true
+                            }
+                        },
+                        {
+                            "type": "grid",
+                            "columns": 3,
+                            "cards": [
+                                {
+                                    "type": "light",
+                                    "entity": "light.eettafel"
+                                },
+                                {
+                                    "type": "light",
+                                    "entity": "light.keukenspots"
+                                },
+                                {
+                                    "type": "light",
+                                    "entity": "light.woonkamer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "grid",
+                            "cards": [
+                                {
+                                    "type": "button",
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "switch.turn_on",
+                                        "service_data": {
+                                            "entity_id": "switch.pt2262_0ce6e1"
+                                        }
+                                    },
+                                    "entity": "switch.pt2262_0ce6e1"
+                                },
+                                {
+                                    "type": "button",
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "switch.turn_on",
+                                        "service_data": {
+                                            "entity_id": "switch.pt2262_0ce6e2"
+                                        }
+                                    },
+                                    "entity": "switch.pt2262_0ce6e2"
+                                },
+                                {
+                                    "type": "button",
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "switch.turn_on",
+                                        "service_data": {
+                                            "entity_id": "switch.pt2262_0ce6e4"
+                                        }
+                                    },
+                                    "entity": "switch.pt2262_0ce6e4"
+                                },
+                                {
+                                    "type": "button",
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "switch.turn_on",
+                                        "service_data": {
+                                            "entity_id": "switch.pt2262_0b1513"
+                                        }
+                                    },
+                                    "entity": "switch.pt2262_0b1513"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -142,7 +202,9 @@
                             "title": "Rolluiken"
                         },
                         {
-                            "type": "vertical-stack",
+                            "type": "grid",
+                            "columns": 1,
+                            "square": false,
                             "title": "Aircos",
                             "cards": [
                                 {
@@ -162,7 +224,9 @@
                             ]
                         },
                         {
-                            "type": "horizontal-stack",
+                            "type": "grid",
+                            "columns": 2,
+                            "square": false,
                             "cards": [
                                 {
                                     "type": "sensor",
@@ -238,7 +302,8 @@
                     ],
                     "cards": [
                         {
-                            "type": "horizontal-stack",
+                            "type": "grid",
+                            "columns": 4,
                             "cards": [
                                 {
                                     "type": "gauge",
@@ -268,6 +333,14 @@
                                     "max": 80
                                 }
                             ]
+                        },
+                        {
+                            "type": "custom:button-card",
+                            "entity": "input_boolean.enable_deurbel",
+                            "icon": "[[[ if (entity.state == \"on\") return \"mdi:bell-ring-outline\"; else return \"mdi:bell-off-outline\"; ]]]",
+                            "confirmation": {
+                                "text": "[[[ return `Weet je zeker dat je de deurbel aan of uit wil zetten?` ]]]"
+                            }
                         }
                     ]
                 },
@@ -335,6 +408,15 @@
                                 },
                                 {
                                     "entity": "binary_sensor.someone_home"
+                                },
+                                {
+                                    "entity": "input_boolean.enable_deurbel"
+                                },
+                                {
+                                    "entity": "input_boolean.morning_livingroom_activated"
+                                },
+                                {
+                                    "entity": "input_boolean.notify_airco_ignored"
                                 }
                             ]
                         },
@@ -342,11 +424,131 @@
                             "type": "entities",
                             "entities": [
                                 {
-                                    "entity": "sensor.wasmachine_energy"
-                                },
-                                {
                                     "entity": "sensor.wasmachine_power",
                                     "secondary_info": "last-changed"
+                                },
+                                {
+                                    "entity": "script.notification_washing_machine",
+                                    "type": "attribute",
+                                    "attribute": "current"
+                                },
+                                {
+                                    "entity": "input_datetime.washing_machine_done"
+                                },
+                                {
+                                    "entity": "input_boolean.notify_washing_machine_when_home"
+                                },
+                                {
+                                    "entity": "input_boolean.washing_machine_full"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "type": "custom:fold-entity-row",
+                                    "head": {
+                                        "type": "custom:slider-entity-row",
+                                        "entity": "light.woonkamer"
+                                    },
+                                    "open": true,
+                                    "entities": [
+                                        {
+                                            "type": "custom:fold-entity-row",
+                                            "head": {
+                                                "type": "custom:slider-entity-row",
+                                                "entity": "light.voorkamer"
+                                            },
+                                            "entities": [
+                                                {
+                                                    "type": "custom:slider-entity-row",
+                                                    "entity": "light.buffet"
+                                                },
+                                                {
+                                                    "type": "custom:slider-entity-row",
+                                                    "entity": "light.deur"
+                                                },
+                                                {
+                                                    "type": "custom:slider-entity-row",
+                                                    "entity": "light.bank"
+                                                },
+                                                {
+                                                    "type": "custom:slider-entity-row",
+                                                    "entity": "light.broodkast"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "custom:fold-entity-row",
+                                            "head": {
+                                                "type": "custom:slider-entity-row",
+                                                "entity": "light.keukenspots"
+                                            },
+                                            "entities": [
+                                                {
+                                                    "type": "custom:slider-entity-row",
+                                                    "entity": "light.kookeiland_spots"
+                                                },
+                                                {
+                                                    "type": "custom:slider-entity-row",
+                                                    "entity": "light.kastenwand"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "custom:slider-entity-row",
+                                            "entity": "light.kookeiland"
+                                        },
+                                        {
+                                            "type": "custom:slider-entity-row",
+                                            "entity": "light.eettafel"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "entity",
+                            "entity": "media_player.tv"
+                        },
+                        {
+                            "type": "button",
+                            "entity": "switch.pt2262_0ce6e1",
+                            "show_state": false,
+                            "tap_action": {
+                                "action": "call-service",
+                                "service": "switch.turn_on",
+                                "service_data": {
+                                    "entity_id": "switch.pt2262_0ce6e1"
+                                }
+                            },
+                            "show_icon": true,
+                            "show_name": true
+                        },
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "type": "custom:fold-entity-row",
+                                    "head": {
+                                        "entity": "cover.zonwering_beneden"
+                                    },
+                                    "open": false,
+                                    "entities": [
+                                        {
+                                            "entity": "cover.screen_pui",
+                                            "name": "Pui"
+                                        },
+                                        {
+                                            "entity": "cover.screen_raam",
+                                            "name": "Raam"
+                                        },
+                                        {
+                                            "entity": "cover.screen_voorgevel",
+                                            "name": "Voorgevel"
+                                        }
+                                    ]
                                 }
                             ]
                         }
